@@ -7,4 +7,5 @@ CREATE TABLE APIConfig
 
 INSERT APIConfig VALUES
 ('AzureSentiment','https://westus2.api.cognitive.microsoft.com/','<keyvalue>'),
-('AzureTranslate','https://api.cognitive.microsofttranslator.com',',<keyvalue>')
+('AzureTranslate','https://api.cognitive.microsofttranslator.com',',<keyvalue>'),
+('HelloWorld','<fn url>','<keyvalue>')
