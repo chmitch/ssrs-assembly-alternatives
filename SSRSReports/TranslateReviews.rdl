@@ -108,7 +108,7 @@ WHERE apiId = 'AzureTranslate'</CommandText>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Code.Translate(Fields!ReviewText.Value,"de",First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig"))</Value>
+                                      <Value>=Code.Translate(Fields!ReviewText.Value,Parameters!language.Value,First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig"))</Value>
                                       <Style />
                                     </TextRun>
                                   </TextRuns>
@@ -175,7 +175,7 @@ WHERE apiId = 'AzureTranslate'</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Code.Translate("Translated Reviews","de",First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig"))</Value>
+                    <Value>="Translated Reviews aka (" &amp; Code.Translate("Translated Reviews",Parameters!language.Value,First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig")) &amp; ")"</Value>
                     <Style>
                       <FontSize>22pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -227,10 +227,43 @@ WHERE apiId = 'AzureTranslate'</CommandText>
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="language">
+      <DataType>String</DataType>
+      <Prompt>Select: Language</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>zh-Hant</Value>
+            <Label>Chinese</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>de</Value>
+            <Label>German</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>fr</Value>
+            <Label>French</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>es</Value>
+            <Label>Spanish</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>language</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Code>Public Function Translate(ByVal textToTranslate As String, ByVal lang As String, ByVal host As String, ByVal authKey As String, ByVal apiRegion as String) As String

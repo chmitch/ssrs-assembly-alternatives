@@ -51,7 +51,7 @@
   <ItemGroup>
     <Report Include="CallAzureFunction.rdl" />
     <Report Include="ScoredReviews.rdl" />
-    <Report Include="TestTranslateDE.rdl" />
+    <Report Include="TranslateReviews.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
 </Project>
