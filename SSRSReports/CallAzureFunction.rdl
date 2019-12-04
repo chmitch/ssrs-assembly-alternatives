@@ -2,6 +2,36 @@
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="pbipaginated">
+      <ConnectionProperties>
+        <DataProvider>SQLAZURE</DataProvider>
+        <ConnectString>Data Source=cgmpbisvr01.database.windows.net;Initial Catalog=pbipaginated;Encrypt=True;TrustServerCertificate=False</ConnectString>
+      </ConnectionProperties>
+      <rd:SecurityType>DataBase</rd:SecurityType>
+      <rd:DataSourceID>85cab617-f5b9-4561-b51f-c49fb6be9828</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="APIConfig">
+      <Query>
+        <DataSourceName>pbipaginated</DataSourceName>
+        <CommandText>SELECT apiUri, apiKey
+FROM APIConfig
+WHERE apiId = 'HelloWorld'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="apiUri">
+          <DataField>apiUri</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="apiKey">
+          <DataField>apiKey</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -13,7 +43,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Code.Translate("Jason")</Value>
+                    <Value>=Code.CallAPI(Parameters!TextForAPI.Value,First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"))</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -80,28 +110,36 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="TextForAPI">
+      <DataType>String</DataType>
+      <Prompt>Enter your name:</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>TextForAPI</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Function Translate(ByVal text As String) As String
-
-        Dim authKey As String
-        authKey = "L271Zbegdxfy8gSHDt7D2P/gFLPGHHAW2xPbUTSIVG8mtFR77/J9Lw=="
-
-        Dim host As String
-        host = "https://cgmfntest.azurewebsites.net"
+  <Code>Public Function CallAPI(ByVal text As String, ByVal host as String, ByVal authKey As String) As String
 
         Dim path As String
-        path = "/api/HttpTrigger1?code=" + authKey
+        path = "/api/HelloWorld?code=" + authKey
 
-        Dim translateParams As String
-        translateParams = "&amp;name=" + text 
+        '' This API accepts query string pararameters.
+        Dim apiParams As String
+        apiParams = "&amp;name=" + text 
 
         Dim uri As String
-        uri = host + path + translateParams
+        uri = host + path + apiParams 
 
         '' Create request
         Dim webRequest As Net.WebRequest
@@ -122,14 +160,8 @@
             Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
             responseString = responseReader.ReadToEnd()
         End Using
-
-        '' Looks like
-        '' 
-        '' Need to work out a way to reference newtonsoft
-        '' At the moment the translation is number 21
-
         
-        Translate = responseString
+        CallAPI = responseString
     End Function
 </Code>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
