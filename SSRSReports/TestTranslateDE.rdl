@@ -2,22 +2,182 @@
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="pbipaginated">
+      <ConnectionProperties>
+        <DataProvider>SQLAZURE</DataProvider>
+        <ConnectString>Data Source=cgmpbisvr01.database.windows.net;Initial Catalog=pbipaginated;Encrypt=True;TrustServerCertificate=False</ConnectString>
+      </ConnectionProperties>
+      <rd:SecurityType>DataBase</rd:SecurityType>
+      <rd:DataSourceID>7c57288b-075e-47e0-afa2-6a8545284862</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Reviews">
+      <Query>
+        <DataSourceName>pbipaginated</DataSourceName>
+        <CommandText>SELECT ReviewId, ReviewText FROM Reviews</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ReviewId">
+          <DataField>ReviewId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ReviewText">
+          <DataField>ReviewText</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="APIConfig">
+      <Query>
+        <DataSourceName>pbipaginated</DataSourceName>
+        <CommandText>SELECT apiUri, apiKey, apiRegion
+FROM APIConfig
+WHERE apiId = 'AzureTranslate'</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="apiUri">
+          <DataField>apiUri</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="apiKey">
+          <DataField>apiKey</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="apiRegion">
+          <DataField>apiRegion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
         <ReportItems>
-          <Textbox Name="ReportTitle">
+          <Tablix Name="Tablix2">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>8.05208in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.81771in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Rectangle Name="Rectangle2">
+                          <ReportItems>
+                            <Textbox Name="ReviewText">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!ReviewText.Value</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>ReviewText</rd:DefaultName>
+                              <Top>0.125in</Top>
+                              <Left>0.13021in</Left>
+                              <Height>0.55729in</Height>
+                              <Width>3.67708in</Width>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                            <Textbox Name="ReviewText2">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Code.Translate(Fields!ReviewText.Value,"de",First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig"))</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>ReviewText</rd:DefaultName>
+                              <Top>0.125in</Top>
+                              <Left>4.11931in</Left>
+                              <Height>0.55729in</Height>
+                              <Width>3.67708in</Width>
+                              <ZIndex>1</ZIndex>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </ReportItems>
+                          <KeepTogether>true</KeepTogether>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Rectangle>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>Reviews</DataSetName>
+            <Top>1.00917in</Top>
+            <Left>0.26958in</Left>
+            <Height>0.81771in</Height>
+            <Width>8.05208in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Textbox Name="Textbox4">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Label>Global Category Report</Label>
-                    <Value>=Code.Translate("Global Category Report", "de")</Value>
+                    <Value>=Code.Translate("Translated Reviews","de",First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"),First(Fields!apiRegion.Value, "APIConfig"))</Value>
                     <Style>
-                      <FontFamily>Segoe UI Light</FontFamily>
-                      <FontSize>28pt</FontSize>
+                      <FontSize>22pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -25,10 +185,10 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
-            <rd:DefaultName>ReportTitle</rd:DefaultName>
-            <Height>0.66667in</Height>
-            <Width>5.5in</Width>
+            <rd:DefaultName>Textbox4</rd:DefaultName>
+            <Height>0.68229in</Height>
+            <Width>8.52083in</Width>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -53,39 +213,6 @@
           <Height>0.54375in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
-          <ReportItems>
-            <Textbox Name="ExecutionTime">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Globals!ExecutionTime</Value>
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>ExecutionTime</rd:DefaultName>
-              <Top>0.2in</Top>
-              <Left>6.06597in</Left>
-              <Height>0.25in</Height>
-              <Width>2in</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-          </ReportItems>
           <Style>
             <Border>
               <Style>None</Style>
@@ -106,13 +233,7 @@
       <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Function Translate(ByVal textToTranslate As String, ByVal lang As String) As String
-
-        Dim authKey As String
-        authKey = "2d6b21b0c9ff44d581d5ba5f659c4307"
-
-        Dim host As String
-        host = "https://api.cognitive.microsofttranslator.com"
+  <Code>Public Function Translate(ByVal textToTranslate As String, ByVal lang As String, ByVal host As String, ByVal authKey As String, ByVal apiRegion as String) As String
 
         Dim path As String
         path = "/translate?api-version=3.0"
@@ -122,6 +243,9 @@
 
         Dim uri As String
         uri = host + path + translateParams
+
+        ''Cleaning up " characters in the string so json will parse correctly.
+        textToTranslate = textToTranslate.Replace("""","")
 
         Dim jsonBodyBlob As String
         jsonBodyBlob = "[{ ""Text"": """ + textToTranslate + """}]"
@@ -137,6 +261,7 @@
         webRequest.ContentType = "application/json"
         webRequest.ContentLength = data.Length
         webRequest.Headers.Add("Ocp-Apim-Subscription-Key", authKey)
+        webRequest.Headers.Add("Ocp-Apim-Subscription-Region", apiRegion)
 
         Using webRequestStream As IO.Stream = webRequest.GetRequestStream()
 
