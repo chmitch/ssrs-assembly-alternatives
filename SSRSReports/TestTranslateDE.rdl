@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Textbox Name="ReportTitle">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>Global Category Report</Label>
+                    <Value>=Code.Translate("Global Category Report", "de")</Value>
+                    <Style>
+                      <FontFamily>Segoe UI Light</FontFamily>
+                      <FontSize>28pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
+            <rd:DefaultName>ReportTitle</rd:DefaultName>
+            <Height>0.66667in</Height>
+            <Width>5.5in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <Height>2.28125in</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>8.52083in</Width>
+      <Page>
+        <PageFooter>
+          <Height>0.54375in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ExecutionTime">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ExecutionTime</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+              <Top>0.2in</Top>
+              <Left>6.06597in</Left>
+              <Height>0.25in</Height>
+              <Width>2in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <LeftMargin>1in</LeftMargin>
+        <RightMargin>1in</RightMargin>
+        <TopMargin>1in</TopMargin>
+        <BottomMargin>1in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <Code>Public Function Translate(ByVal textToTranslate As String, ByVal lang As String) As String
+
+        Dim authKey As String
+        authKey = "2d6b21b0c9ff44d581d5ba5f659c4307"
+
+        Dim host As String
+        host = "https://api.cognitive.microsofttranslator.com"
+
+        Dim path As String
+        path = "/translate?api-version=3.0"
+
+        Dim translateParams As String
+        translateParams = "&amp;to=en&amp;to=" + lang 
+
+        Dim uri As String
+        uri = host + path + translateParams
+
+        Dim jsonBodyBlob As String
+        jsonBodyBlob = "[{ ""Text"": """ + textToTranslate + """}]"
+
+        '' Create request
+        Dim webRequest As Net.WebRequest
+        webRequest = webRequest.Create(uri)
+
+        Dim data As Byte()
+        data = Text.Encoding.UTF8.GetBytes(jsonBodyBlob)
+
+        webRequest.Method = "Post"
+        webRequest.ContentType = "application/json"
+        webRequest.ContentLength = data.Length
+        webRequest.Headers.Add("Ocp-Apim-Subscription-Key", authKey)
+
+        Using webRequestStream As IO.Stream = webRequest.GetRequestStream()
+
+            webRequestStream.Write(data, 0, data.Length)
+            webRequestStream.Close()
+
+        End Using
+
+        '' Execute translate request
+        Dim response As Net.WebResponse
+        response = webRequest.GetResponse()
+
+        Dim responseString As String
+
+        Using responseStream As IO.Stream = response.GetResponseStream()
+            Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
+            responseString = responseReader.ReadToEnd()
+        End Using
+
+        '' Looks like
+        '' [{"detectedLanguage":{"language":"en","score":1.0},"translations":[{"text":"hello","to":"en"},{"text":"Hallo","to":"de"}]}]
+
+        '' Need to work out a way to reference newtonsoft
+        '' At the moment the translation is number 21
+
+        Dim translation As String = responseString.Split("""")(21)
+
+        Translate = translation
+    End Function</Code>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>cb22c5a8-3171-4040-bf80-87f2dd69487d</rd:ReportID>
+</Report>
