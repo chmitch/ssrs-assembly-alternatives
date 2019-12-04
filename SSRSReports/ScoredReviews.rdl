@@ -30,6 +30,24 @@
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="APIConfig">
+      <Query>
+        <DataSourceName>pbipaginated</DataSourceName>
+        <CommandText>SELECT apiUri, apiKey
+FROM APIConfig
+WHERE apiId = 'AzureSentiment'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="apiUri">
+          <DataField>apiUri</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="apiKey">
+          <DataField>apiKey</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -222,7 +240,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>= Code.CallSentimentAPI(Fields!ReviewText.Value)</Value>
+                                  <Value>= Code.CallSentimentAPI(Fields!ReviewText.Value,First(Fields!apiUri.Value, "APIConfig"),First(Fields!apiKey.Value, "APIConfig"))</Value>
                                   <Style>
                                     <Format>P2</Format>
                                   </Style>
@@ -327,19 +345,14 @@
       <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Function CallSentimentAPI(ByVal textToScore As String) As Double
+  <Code>Public Function CallSentimentAPI(ByVal textToScore As String, ByVal apiUri as String, ByVal authKey as String) As Double
 
-        Dim authKey As String
-        authKey = "94abb7acd7574bd5a18e55bd0195b9a6"
-
-        Dim host As String
-        host = "https://westus2.api.cognitive.microsoft.com/"
-
+        
         Dim path As String
         path = "/text/analytics/v2.1/sentiment"
 
         Dim uri As String
-        uri = host + path
+        uri = apiUri + path
 
         '' embedded quotes in the string will mess up the json.  Strip them out.
         textToScore = textToScore.Replace("""","")
@@ -386,10 +399,6 @@
         Dim sentiment As String = responseString.Split("""")(8)
         sentiment = sentiment.Replace(":","")
         sentiment = sentiment.Replace("}],","")
-
-
-        Dim jsonResponse As Json.JsonDocument
-        jsonResponse.Parse(sentiment, null)
 
         ''convert the return value to a double.
         CallSentimentAPI= Convert.ToDouble(sentiment)
