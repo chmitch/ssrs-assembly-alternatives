@@ -1,7 +1,7 @@
 CREATE TABLE APIConfig
 	(
 	apiId varchar(50),
-	apiUri varchar(50),
+	apiUri varchar(500),
 	apiKey varchar(1000),
 	apiRegion varchar(50) NULL
 	);
