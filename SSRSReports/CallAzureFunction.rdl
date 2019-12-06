@@ -130,38 +130,40 @@ WHERE apiId = 'HelloWorld'</CommandText>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Code>Public Function CallAPI(ByVal text As String, ByVal host as String, ByVal authKey As String) As String
+	Dim responseString As String
 
-        Dim path As String
-        path = "/api/HelloWorld?code=" + authKey
+	Try
+		Dim path As String
+		path = "/api/HelloWorld?code=" + authKey
 
-        '' This API accepts query string pararameters.
-        Dim apiParams As String
-        apiParams = "&amp;name=" + text 
+		'' This API accepts query string pararameters.
+		Dim apiParams As String
+		apiParams = "&amp;name=" + text 
 
-        Dim uri As String
-        uri = host + path + apiParams 
+		Dim uri As String
+		uri = host + path + apiParams 
 
-        '' Create request
-        Dim webRequest As Net.WebRequest
-        webRequest = webRequest.Create(uri)
+		'' Create request
+		Dim webRequest As Net.WebRequest
+ 		webRequest = webRequest.Create(uri)
 
+		webRequest.Method = "Get"
+ 		webRequest.ContentType = "application/json"
 
-        webRequest.Method = "Get"
-        webRequest.ContentType = "application/json"
+		'' Execute translate request
+		Dim response As Net.WebResponse
+		response = webRequest.GetResponse()
 
+		Using responseStream As IO.Stream = response.GetResponseStream()
+			Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
+			responseString = responseReader.ReadToEnd()
+		End Using
 
-        '' Execute translate request
-        Dim response As Net.WebResponse
-        response = webRequest.GetResponse()
-
-        Dim responseString As String
-
-        Using responseStream As IO.Stream = response.GetResponseStream()
-            Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
-            responseString = responseReader.ReadToEnd()
-        End Using
-        
-        CallAPI = responseString
+	Catch e As Exception
+		responseString = e.Message
+	Finally
+	        CallAPI = responseString
+	End Try
     End Function
 </Code>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
