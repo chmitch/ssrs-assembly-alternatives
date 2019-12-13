@@ -50,6 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Report Include="CallAzureFunction.rdl" />
+    <Report Include="JSONConverter.rdl" />
     <Report Include="ScoredReviews.rdl" />
     <Report Include="TranslateReviews.rdl" />
   </ItemGroup>

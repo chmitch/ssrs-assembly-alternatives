@@ -6,7 +6,7 @@
     <DataSource Name="pbipaginated">
       <ConnectionProperties>
         <DataProvider>SQLAZURE</DataProvider>
-        <ConnectString>Data Source=cgmpbisvr01.database.windows.net;Initial Catalog=pbipaginated;Encrypt=True;TrustServerCertificate=False</ConnectString>
+        <ConnectString>Data Source=akssrs.database.windows.net;Initial Catalog=akSSRSConfig;Encrypt=True;TrustServerCertificate=False</ConnectString>
         <Prompt>Specify a user name and password for data source pbipaginated:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
@@ -33,9 +33,11 @@
     <DataSet Name="APIConfig">
       <Query>
         <DataSourceName>pbipaginated</DataSourceName>
-        <CommandText>SELECT apiUri, apiKey
-FROM APIConfig
-WHERE apiId = 'AzureSentiment'</CommandText>
+        <CommandText>
+          SELECT apiUri, apiKey
+          FROM APIConfig
+          WHERE apiId = 'AzureSentiment'
+        </CommandText>
       </Query>
       <Fields>
         <Field Name="apiUri">
@@ -345,64 +347,66 @@ WHERE apiId = 'AzureSentiment'</CommandText>
       <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Function CallSentimentAPI(ByVal textToScore As String, ByVal apiUri as String, ByVal authKey as String) As Double
+  <Code>
+    Public Function CallSentimentAPI(ByVal textToScore As String, ByVal apiUri as String, ByVal authKey as String) As Double
 
-        
-        Dim path As String
-        path = "/text/analytics/v2.1/sentiment"
 
-        Dim uri As String
-        uri = apiUri + path
+    Dim path As String
+    path = "/text/analytics/v2.1/sentiment"
 
-        '' embedded quotes in the string will mess up the json.  Strip them out.
-        textToScore = textToScore.Replace("""","")
+    Dim uri As String
+    uri = apiUri + path
 
-        Dim jsonBodyBlob As String
-        jsonBodyBlob = "{""documents"":[ {""language"": ""en"",""id"": ""1"",""text"": """ + textToScore + """} ] }"
+    '' embedded quotes in the string will mess up the json.  Strip them out.
+    textToScore = textToScore.Replace("""","")
 
-        '' Create request
-        Dim webRequest As Net.WebRequest
-        webRequest = webRequest.Create(uri)
+    Dim jsonBodyBlob As String
+    jsonBodyBlob = "{""documents"":[ {""language"": ""en"",""id"": ""1"",""text"": """ + textToScore + """} ] }"
 
-        Dim data As Byte()
-        data = Text.Encoding.UTF8.GetBytes(jsonBodyBlob)
+    '' Create request
+    Dim webRequest As Net.WebRequest
+    webRequest = webRequest.Create(uri)
 
-        webRequest.Method = "Post"
-        webRequest.ContentType = "application/json"
-        webRequest.ContentLength = data.Length
-        webRequest.Headers.Add("Ocp-Apim-Subscription-Key", authKey)
+    Dim data As Byte()
+    data = Text.Encoding.UTF8.GetBytes(jsonBodyBlob)
 
-        Using webRequestStream As IO.Stream = webRequest.GetRequestStream()
+    webRequest.Method = "Post"
+    webRequest.ContentType = "application/json"
+    webRequest.ContentLength = data.Length
+    webRequest.Headers.Add("Ocp-Apim-Subscription-Key", authKey)
 
-            webRequestStream.Write(data, 0, data.Length)
-            webRequestStream.Close()
+    Using webRequestStream As IO.Stream = webRequest.GetRequestStream()
 
-        End Using
+    webRequestStream.Write(data, 0, data.Length)
+    webRequestStream.Close()
 
-        '' Execute translate request
-        Dim response As Net.WebResponse
-        response = webRequest.GetResponse()
+    End Using
 
-        Dim responseString As String
+    '' Execute translate request
+    Dim response As Net.WebResponse
+    response = webRequest.GetResponse()
 
-        Using responseStream As IO.Stream = response.GetResponseStream()
-            Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
-            responseString = responseReader.ReadToEnd()
-        End Using
+    Dim responseString As String
 
-        '' Looks like
-        '' [{"detectedLanguage":{"language":"en","score":1.0},"translations":[{"text":"hello","to":"en"},{"text":"Hallo","to":"de"}]}]
+    Using responseStream As IO.Stream = response.GetResponseStream()
+    Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
+    responseString = responseReader.ReadToEnd()
+    End Using
 
-        '' Need to work out a way to reference newtonsoft
-        '' At the moment the translation is number 21
+    '' Looks like
+    '' [{"detectedLanguage":{"language":"en","score":1.0},"translations":[{"text":"hello","to":"en"},{"text":"Hallo","to":"de"}]}]
 
-        Dim sentiment As String = responseString.Split("""")(8)
-        sentiment = sentiment.Replace(":","")
-        sentiment = sentiment.Replace("}],","")
+    '' Need to work out a way to reference newtonsoft
+    '' At the moment the translation is number 21
 
-        ''convert the return value to a double.
-        CallSentimentAPI= Convert.ToDouble(sentiment)
-    End Function</Code>
+    Dim sentiment As String = responseString.Split("""")(8)
+    sentiment = sentiment.Replace(":","")
+    sentiment = sentiment.Replace("}],","")
+
+    ''convert the return value to a double.
+    CallSentimentAPI= Convert.ToDouble(sentiment)
+    End Function
+  </Code>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>aea50f09-7d5b-42e0-9747-aff1eb5dd92f</rd:ReportID>
 </Report>

@@ -6,7 +6,7 @@
     <DataSource Name="pbipaginated">
       <ConnectionProperties>
         <DataProvider>SQLAZURE</DataProvider>
-        <ConnectString>Data Source=cgmpbisvr01.database.windows.net;Initial Catalog=pbipaginated;Encrypt=True;TrustServerCertificate=False</ConnectString>
+        <ConnectString>Data Source=akssrs.database.windows.net;Initial Catalog=akSSRSConfig;Encrypt=True;TrustServerCertificate=False</ConnectString>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>85cab617-f5b9-4561-b51f-c49fb6be9828</rd:DataSourceID>
@@ -130,40 +130,57 @@ WHERE apiId = 'HelloWorld'</CommandText>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Code>Public Function CallAPI(ByVal text As String, ByVal host as String, ByVal authKey As String) As String
+    Dim responseString As String
 
+ 
+
+    Try
         Dim path As String
         path = "/api/HelloWorld?code=" + authKey
+
+ 
 
         '' This API accepts query string pararameters.
         Dim apiParams As String
         apiParams = "&amp;name=" + text 
 
+ 
+
         Dim uri As String
         uri = host + path + apiParams 
 
+ 
+
         '' Create request
         Dim webRequest As Net.WebRequest
-        webRequest = webRequest.Create(uri)
+         webRequest = webRequest.Create(uri)
 
+ 
 
         webRequest.Method = "Get"
-        webRequest.ContentType = "application/json"
+         webRequest.ContentType = "application/json"
 
+ 
 
         '' Execute translate request
         Dim response As Net.WebResponse
         response = webRequest.GetResponse()
 
-        Dim responseString As String
+ 
 
         Using responseStream As IO.Stream = response.GetResponseStream()
             Dim responseReader As IO.StreamReader = New IO.StreamReader(responseStream)
             responseString = responseReader.ReadToEnd()
         End Using
-        
-        CallAPI = responseString
-    End Function
-</Code>
+
+ 
+
+    Catch e As Exception
+        responseString = e.Message
+    Finally
+            CallAPI = responseString
+    End Try
+    End Function</Code>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>31f86d3c-eb31-4f15-a92c-6963a5fc1228</rd:ReportID>
 </Report>
