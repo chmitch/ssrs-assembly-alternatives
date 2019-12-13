@@ -1,7 +1,7 @@
 CREATE TABLE Reviews
 	(
 	ReviewId int,
-	ReviewTest varchar(1000)
+	ReviewText varchar(1000)
 	);
 
 INSERT Reviews VALUES
