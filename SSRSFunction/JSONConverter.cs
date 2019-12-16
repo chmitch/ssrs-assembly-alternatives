@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace JSONConverter
+namespace SSRSFunction
 {
-    public static class Converter
+    public static class JSONConverter
     {
-        [FunctionName("Converter")]
+        [FunctionName("JSONConverter")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)

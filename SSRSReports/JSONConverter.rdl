@@ -7,6 +7,7 @@
       <ConnectionProperties>
         <DataProvider>SQLAZURE</DataProvider>
         <ConnectString>Data Source=akssrs.database.windows.net;Initial Catalog=akSSRSConfig</ConnectString>
+        <Prompt>Specify a user name and password for data source DataSource1:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>fecbd920-b210-48fe-8d57-6efecfc1c02a</rd:DataSourceID>
@@ -566,7 +567,7 @@ WHERE apiId = 'JSONConverter'</CommandText>
 
     Try
         Dim path As String
-        path = "/api/Converter?code=" + authKey
+        path = "/api/JSONConverter?code=" + authKey
 
  
 
