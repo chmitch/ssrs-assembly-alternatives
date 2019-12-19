@@ -13,24 +13,28 @@ There are five reports that highlight different use cases and showcase Paginated
 3.	ScoredReviews.rdl – Score product reviews
 4.	TranslateReviews.rdl – Translate text into different languages
 
-# Outline on setup process
-Prerequisites...
-1. You need VS2019.
-1. You need sql data tools
+# Setup Instructions
+Prereqs
+1. Install Visual Studio 2019 https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2019
+    a. Choose SQL Server Data Tools as a workload during setup of Visual Studio Installer.  https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15
+    b. Add the "Microsoft Reporting Services Project" as an Extension from the Marketplace https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019 
+2. Azure Subscription 
+3. Power BI tenant with Power BI Pro license for developer
+4. Power BI Premium Capacity to the Workspace that contains the Paginated Report
 
-Things to create...
+# Environment Setup
 1. Cognitive Services Capacity in Azure
-1. Power BI Capacity in Azure
-1. App Workspace in Power BI
-1. Azure SQL Database
-1. Azure Function App
+2. Power BI Capacity in Azure
+3. App Workspace in Power BI
+4. Azure SQL Database
+5. Azure Function App
 
-Things to configure...
+# Code Deployment in Visual Studio
 1. Publish Azure Functions
-1. Assign Power BI Capacity to Power BI App Workspace
-1. Edit CreateAPIConfigTable.sql to include necessary keys and URIs for Congnitive Services and Azure Function app.
-1. Run both .sql scripts on Azure SQL Database.
-1. Edit connection strings for .rdl files in Visual Studio project for each report.
-1. Publish .rdl files to Power BI App Workspace.
-1. Enter credentials for data soruce in Power BI.
+2. Assign Power BI Capacity to Power BI App Workspace
+3. Edit CreateAPIConfigTable.sql to include necessary keys and URIs for Congnitive Services and Azure Function app.
+4. Run both .sql scripts on Azure SQL Database.
+5. Edit connection strings for .rdl files in Visual Studio project for each report.
+6. Publish .rdl files to Power BI App Workspace.
+7. Enter credentials for data soruce in Power BI.
 
