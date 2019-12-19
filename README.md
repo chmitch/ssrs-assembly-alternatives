@@ -16,8 +16,11 @@ There are five reports that highlight different use cases and showcase Paginated
 # Setup Instructions
 Prereqs
 1. Install Visual Studio 2019 https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2019
+    
     a. Choose SQL Server Data Tools as a workload during setup of Visual Studio Installer.  https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15
+    
     b. Add the "Microsoft Reporting Services Project" as an Extension from the Marketplace https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019 
+    
 2. Azure Subscription 
 3. Power BI tenant with Power BI Pro license for developer
 4. Power BI Premium Capacity to the Workspace that contains the Paginated Report
