@@ -6,7 +6,7 @@ In the Power BI Service, we can upload Paginated Reports (formally known as, Rep
 
 For large migrations, a number of customers perceived “custom assemblies” as a roadblock and this is the reason for this repo.  We want to ensure everyone knows this is a supported feature just needs a bit of refactoring of their custom assemblies into Azure Functions.  With Azure Functions, we can refactor the existing code set and provide a REST API endpoint for the report to call and implements the functionality needed in the reports.  This repo has a few working examples to help provide technical guidance on how-to implement it and hopefully help you better understand the use case.
 
-There are five reports that highlight different use cases and showcase Paginated reports & Azure Functions.
+There are four reports that highlight different use cases and showcase Paginated reports & Azure Functions.
 
 1.	CallAzureFunction.rdl – Simple Hello World example to show mechanics
 2.	JSONConverter.rdl – C# Azure Function to convert JSON files into tables
@@ -28,13 +28,13 @@ Prereqs
 # Environment Setup
 1. Setup Cognitive Services; Text API & Translate API
 
-    a. Create Text API in Azure Portal (Copy Key & Endpoint URL into Notepad from Quick Start menu)
+    a. Create a cognitive services resource in the Azure Portal.
     
-    b. Create Translator Text API in Azure Portal (Copy config into notepad)
+    b. Navigate to the newly created service and copy the api security key for use in later configuration steps.
 
 2. Create Azure Function App
 
-    a. During Deployment, publish HelloWorld.cs & JSONConverter.cs files as Functions
+    a. During Deployment you will publish HelloWorld.cs & JSONConverter.cs files as Functions
 
 3. Azure SQL Database
     
@@ -65,7 +65,7 @@ Prereqs
 
     b. Run both .sql scripts on Azure SQL Database.
 
-3. Edit connection strings for .rdl files in Visual Studio project for each report
+3. Edit connection strings for .rdl files in Visual Studio project for each report.
 4. Publish .rdl files to Power BI App Workspace
 5. Enter credentials for data soruce in Power BI.
 6. Test out reports
