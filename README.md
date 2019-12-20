@@ -1,17 +1,17 @@
-# Paginated Reports in PaaS (Power BI Service)
+# Paginated Reports in Power BI Service (PaaS)
 
-In the past, customer’s deployed SQL Server Reporting Services on their local virtual machine.  Reporting services rendered their static reports and provided analytics to the organization.  A key feature for these reports was providing custom features, functions, business logic that wasn’t native to the platform.  This was accomplished thru custom assemblies where a developer wrote .NET code, compiled it and saved it to a directly on their local server.  The justification for this was to make code reusable across all reports in large enterprise deployments.  
+In the past, customer’s deployed SQL Server Reporting Services on their local virtual machine (IaaS).  Reporting services rendered their static reports and provided analytics to the organization.  A key feature for these reports was providing custom features, functions, business logic that wasn’t native to the platform.  This was accomplished thru custom assemblies where a developer wrote .NET code, compiled it and saved it to a directory on their local server.  The justification for this was to make code reusable across all reports in large enterprise deployments.  
 
-In the Power BI Service, we can upload Paginated Reports (formally known as, Reporting Services Reports) into the service for consumption.  A database developer will use the new Power BI Report Builder to create their paginated report (canned report) and save it to the service or their local PC (file type = .rdl).  These reports are available to end-users as long as their workspace is assigned a premium capacity.  This is a key asset in the business intelligence application.  Reporting Services has been around since SQL Server 2005 and deployed across many BI solutions.
+In the Power BI Service, we can upload Paginated Reports (formally known as, Reporting Services Reports) into the service for consumption.  A database developer will use the new Power BI Report Builder to create their paginated report (canned report) and save it to the service. (file type = .rdl)  These reports are available to end-users as long as their workspace is assigned a premium capacity.  This is a key asset in the business intelligence application.  Reporting Services has been around since SQL Server 2005 and deployed across many BI enviornments.
 
 For large migrations, a number of customers perceived “custom assemblies” as a roadblock and this is the reason for this repo.  We want to ensure everyone knows this is a supported feature just needs a bit of refactoring of their custom assemblies into Azure Functions.  With Azure Functions, we can refactor the existing code set and provide a REST API endpoint for the report to call and implements the functionality needed in the reports.  This repo has a few working examples to help provide technical guidance on how-to implement it and hopefully help you better understand the use case.
 
-There are five reports that highlight different use cases and showcase Paginated reports + Azure functions.
+There are five reports that highlight different use cases and showcase Paginated reports & Azure Functions.
 
-1.	CallAzureFunction.rdl – Simple Hello World Example
-2.	JSONConverter.rdl – Develop Paginated reports reading JSON & files & converting it into tables
-3.	ScoredReviews.rdl – Score product reviews
-4.	TranslateReviews.rdl – Translate text into different languages
+1.	CallAzureFunction.rdl – Simple Hello World example to show mechanics
+2.	JSONConverter.rdl – C# Azure Function to convert JSON files into tables
+3.	ScoredReviews.rdl – Cognitive Service Sentiment API to rate sentiment of review
+4.	TranslateReviews.rdl – Translate reviews into different languages
 
 # Setup Instructions
 Prereqs
@@ -26,16 +26,32 @@ Prereqs
 4. Power BI Premium Capacity to the Workspace that contains the Paginated Report
 
 # Environment Setup
-1. Cognitive Services Capacity in Azure
-2. Power BI Capacity in Azure
-3. App Workspace in Power BI
-4. Azure SQL Database
-5. Azure Function App
+1. Setup Cognitive Services; Text API & Translate API
+
+    a. Create Text API in Azure Portal (Copy Key & Endpoint URL into Notepad from Quick Start menu)
+    
+    b. Create Translator Text API in Azure Portal (Copy config into notepad)
+
+2. Create Azure Function App
+
+    a. During Deployment, publish HelloWorld.cs & JSONConverter.cs files as Functions
+
+3. Azure SQL Database
+    
+    a. Create a SQL Database Service
+
+4. App Workspace in Power BI
+
+    a. Create a Workspace in Power BI Service to publish RDL files
+
+5. Power BI Capacity in Azure
+
+    a. Setup Azure Power BI Embed Capacity. A4 SKU (A4 or higher required for Paginated Reports)
+    b. Assign workspace to Embed capacity in powerbi.com
 
 # Code Deployment in Visual Studio
 1. Publish Azure Functions
-2. Assign Power BI Capacity to Power BI App Workspace
-3. Edit CreateAPIConfigTable.sql to include necessary keys and URIs for Congnitive Services and Azure Function app.
+2. Edit CreateAPIConfigTable.sql to include necessary keys and URIs for Congnitive Services and Azure Function app.
 4. Run both .sql scripts on Azure SQL Database.
 5. Edit connection strings for .rdl files in Visual Studio project for each report.
 6. Publish .rdl files to Power BI App Workspace.
