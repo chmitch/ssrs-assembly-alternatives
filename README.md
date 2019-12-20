@@ -47,13 +47,26 @@ Prereqs
 5. Power BI Capacity in Azure
 
     a. Setup Azure Power BI Embed Capacity. A4 SKU (A4 or higher required for Paginated Reports)
+    
     b. Assign workspace to Embed capacity in powerbi.com
 
 # Code Deployment in Visual Studio
 1. Publish Azure Functions
-2. Edit CreateAPIConfigTable.sql to include necessary keys and URIs for Congnitive Services and Azure Function app.
-4. Run both .sql scripts on Azure SQL Database.
-5. Edit connection strings for .rdl files in Visual Studio project for each report.
-6. Publish .rdl files to Power BI App Workspace.
-7. Enter credentials for data soruce in Power BI.
+
+    a. Right-Click on SSRSFunction Folder in Visual Studio solution
+
+    b. Deployment wizard will create Azure Function and Deploy code
+
+    c. Copy URL and keys to notepad
+
+2. Open SQL Server Management Studio and open sql files in script folder
+
+    a. Edit CreateAPIConfigTable.sql to replace keys and URIs from notepad
+
+    b. Run both .sql scripts on Azure SQL Database.
+
+3. Edit connection strings for .rdl files in Visual Studio project for each report
+4. Publish .rdl files to Power BI App Workspace
+5. Enter credentials for data soruce in Power BI.
+6. Test out reports
 
