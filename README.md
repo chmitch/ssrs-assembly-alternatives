@@ -26,7 +26,6 @@ Prereqs
 # Azure Setup
 1. Setup Cognitive Services
 
-<<<<<<< HEAD
     a. Click on "Create a Resource" and search for "Cognitive Services".  Create this service and assign it to the same resource group as all services you create for this project.  The pricing tier should be S0.
     
     b. At completion of deployment, Go to Quick Start and copy the keys and endpoints in Step 1.  Copy Key 1 to notepad and endpoint.  You will use these values in the CreateAPIConfigTable.sql script.
@@ -34,15 +33,6 @@ Prereqs
 2. Create Azure Function App
 
     a. Create a single Azure Function.  Define the runtime stack as .NET CORE, Operating System as Windows and Plan as Consumption.  Leave all other settings as defaults.
-=======
-    a. Create a cognitive services resource in the Azure Portal.
-    
-    b. Navigate to the newly created service and copy the api security key for use in later configuration steps.
-
-2. Create Azure Function App
-
-    a. During Deployment you will publish HelloWorld.cs & JSONConverter.cs files as Functions
->>>>>>> 6d786883a37e8ea758826cc6aedbb5bb0730dcf0
 
 3. Azure SQL Database
     
@@ -73,13 +63,8 @@ Prereqs
 
     b. Run both .sql scripts on Azure SQL Database.
 
-<<<<<<< HEAD
 3. Edit connection strings for .rdl files in Power BI Report Builder for each report
 4. Open each report and "Save AS" to Power BI Service.
-=======
-3. Edit connection strings for .rdl files in Visual Studio project for each report.
-4. Publish .rdl files to Power BI App Workspace
->>>>>>> 6d786883a37e8ea758826cc6aedbb5bb0730dcf0
 5. Enter credentials for data soruce in Power BI.
 6. Test out reports
 
