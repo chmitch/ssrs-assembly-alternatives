@@ -7,7 +7,7 @@ CREATE TABLE APIConfig
 	);
 
 INSERT APIConfig VALUES
-('AzureSentiment','https://westus2.api.cognitive.microsoft.com/','<keyvalue>',NULL),
-('AzureTranslate','https://api.cognitive.microsofttranslator.com',',<keyvalue>','westus2'),
-('HelloWorld','<fn url>','<keyvalue>',NULL),
-('JSONConverter','<fn url>','<keyvalue>',NULL)
+('AzureSentiment','https://eastus2.api.cognitive.microsoft.com/','ba52cee2c8254a4a95ae2d581fe7ab12',NULL),
+('AzureTranslate','https://api.cognitive.microsofttranslator.com','ba52cee2c8254a4a95ae2d581fe7ab12','westus2'),
+('HelloWorld','https://ssrsfunction20191219092530.azurewebsites.net/api/HelloWorld','aE9UkBuRhXP8ygafFd3lKR0c7BZo7Bq/9SpVXesrRW5ZcJCNGvR1Tw==',NULL),
+('JSONConverter','https://ssrsfunction20191219092530.azurewebsites.net/api/JSONConverter','aE9UkBuRhXP8ygafFd3lKR0c7BZo7Bq/9SpVXesrRW5ZcJCNGvR1Tw==',NULL)

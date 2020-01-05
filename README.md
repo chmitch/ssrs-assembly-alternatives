@@ -1,6 +1,6 @@
 # Paginated Reports in Power BI Service (PaaS)
 
-In the past, customer’s deployed SQL Server Reporting Services on their local virtual machine (IaaS).  Reporting services rendered their static reports and provided analytics to the organization.  A key feature for these reports was providing custom features, functions, business logic that wasn’t native to the platform.  This was accomplished thru custom assemblies where a developer wrote .NET code, compiled it and saved it to a directory on their local server.  The justification for this was to make code reusable across all reports in large enterprise deployments.  
+In the past, customers deployed SQL Server Reporting Services on their local virtual machine (IaaS).  Reporting services rendered their static reports and provided analytics to the organization.  A key feature for these reports was providing custom features, functions, business logic that wasn’t native to the platform.  This was accomplished thru custom assemblies where a developer wrote .NET code, compiled it and saved it to a directory on their local server.  The justification for this was to make code reusable across all reports in large enterprise deployments.  
 
 In the Power BI Service, we can upload Paginated Reports (formally known as, Reporting Services Reports) into the service for consumption.  A database developer will use the new Power BI Report Builder to create their paginated report (canned report) and save it to the service. (file type = .rdl)  These reports are available to end-users as long as their workspace is assigned a premium capacity.  This is a key asset in the business intelligence application.  Reporting Services has been around since SQL Server 2005 and deployed across many BI enviornments.
 
@@ -26,6 +26,7 @@ Prereqs
 # Azure Setup
 1. Setup Cognitive Services
 
+<<<<<<< HEAD
     a. Click on "Create a Resource" and search for "Cognitive Services".  Create this service and assign it to the same resource group as all services you create for this project.  The pricing tier should be S0.
     
     b. At completion of deployment, Go to Quick Start and copy the keys and endpoints in Step 1.  Copy Key 1 to notepad and endpoint.  You will use these values in the CreateAPIConfigTable.sql script.
@@ -33,6 +34,15 @@ Prereqs
 2. Create Azure Function App
 
     a. Create a single Azure Function.  Define the runtime stack as .NET CORE, Operating System as Windows and Plan as Consumption.  Leave all other settings as defaults.
+=======
+    a. Create a cognitive services resource in the Azure Portal.
+    
+    b. Navigate to the newly created service and copy the api security key for use in later configuration steps.
+
+2. Create Azure Function App
+
+    a. During Deployment you will publish HelloWorld.cs & JSONConverter.cs files as Functions
+>>>>>>> 6d786883a37e8ea758826cc6aedbb5bb0730dcf0
 
 3. Azure SQL Database
     
@@ -63,8 +73,13 @@ Prereqs
 
     b. Run both .sql scripts on Azure SQL Database.
 
+<<<<<<< HEAD
 3. Edit connection strings for .rdl files in Power BI Report Builder for each report
 4. Open each report and "Save AS" to Power BI Service.
+=======
+3. Edit connection strings for .rdl files in Visual Studio project for each report.
+4. Publish .rdl files to Power BI App Workspace
+>>>>>>> 6d786883a37e8ea758826cc6aedbb5bb0730dcf0
 5. Enter credentials for data soruce in Power BI.
 6. Test out reports
 

@@ -6,7 +6,7 @@
     <DataSource Name="pbipaginated">
       <ConnectionProperties>
         <DataProvider>SQLAZURE</DataProvider>
-        <ConnectString>Data Source=akssrs.database.windows.net;Initial Catalog=akSSRSConfig;Encrypt=True;TrustServerCertificate=False</ConnectString>
+        <ConnectString>Data Source=ssrsfunctions.database.windows.net;Initial Catalog=ssrsfunctions;Encrypt=True;TrustServerCertificate=False</ConnectString>
         <Prompt>Specify a user name and password for data source pbipaginated:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
